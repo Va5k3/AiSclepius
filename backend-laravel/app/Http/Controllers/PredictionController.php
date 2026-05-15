@@ -8,10 +8,17 @@ use Illuminate\Support\Facades\Http;
 class PredictionController extends Controller
 {
 
+    // FORMS - GET REQUESTS
     public function heartForm(){
         return view('heart-check'); // sta je view? to je fajl koji se nalazi u resources/views i on se koristi za prikazivanje stranice korisniku. U ovom slucaju, to je fajl heart-check.blade.php
     }
+
+    public function diabetesForm(){
+        return view('diabetes-check');
+    }
     
+    // PREDICTIONS - POST REQUESTS
+
     public function predictHeart(Request $request)
     {
         // kupimo podatke iz forme
@@ -30,6 +37,23 @@ class PredictionController extends Controller
         return "Greska: Python server nije dostupan"; 
     }
 
+
+    public function predictDiabetes(Request $request){
+        
+        $data = $request->input('data');
+        $numericData = array_map(function($val){
+            return is_numeric($val) ? (float)$val : 0;
+        }, $data);
+
+        $response = Http::post('http://localhost:8000/predict-diabetes', $numericData);
+
+        if($resposne->successful()){
+            
+        }
+
+
+
+    }
 
 
 }
