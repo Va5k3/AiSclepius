@@ -16,7 +16,6 @@ def read_root():
 @app.post("/predict-heart", tags=["Prediction"]) 
 def predict_heart(data: list = Body(...)):
     input_data = np.array(data).reshape(1,-1)
-
     prediction = heart_model.predict(input_data)
     return {"risk": int(prediction[0])}
 
@@ -24,5 +23,4 @@ def predict_heart(data: list = Body(...)):
 def predict_diabetes(data: list = Body(...)):
     input_data = np.array(data).reshape(1,-1)
     prediction = diabetes_model.predict(input_data)
-
     return{"risk": int(prediction[0])}
