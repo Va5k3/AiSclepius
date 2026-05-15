@@ -20,8 +20,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //added
+    //heart-check
     Route::get('/heart-check', [PredictionController::class, 'heartForm'])->name('heart.check');  
     Route::post('/predict-heart', [PredictionController::class, 'predictHeart'])->name('predict.heart');
+
+    //diabetes-check
+    Route::get('/diabetes-check', [PredictionController::class, 'diabetesForm'])->name('diabetes.check');
+    Route::post('/predict-diabetes',[PredictionController::class,'predictDiabetes'])->name('predict.diabetes');
+
+    //history
+    Route::get('/history',[PredictionController::class, 'history'])->name('predict.history');
 
 });
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+use App\Models\Prediction;
+
 class PredictionController extends Controller
 {
 
@@ -30,8 +32,22 @@ class PredictionController extends Controller
         $response = Http::post('http://localhost:8000/predict-heart', $numericData);
 
         if ($response->successful()){
-            $risk = $response->json()['risk']; 
-            return view('heart-result', ['risk' => $risk]); // prikazujemo stranicu sa rezultatom, to je fajl heart-result.blade.php, i prosledju
+            $risk = $response->json()['risk'];
+            $shapValue = $response->json()['shap_values'];
+            // cuvanje u Prediction bazu
+            Prediction::create([
+                'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
+                'type' => 'heart',
+                'input_data' => $numericData,
+                'result' => $risk
+            ]);
+
+
+            return view('heart-result', [
+                'risk' => $risk,
+                'shap_values' => $shapValue,
+                'inputs' => $numericData
+                ]); // prikazujemo stranicu sa rezultatom, to je fajl heart-result.blade.php, i prosledju
         }
     
         return "Greska: Python server nije dostupan"; 
@@ -47,12 +63,32 @@ class PredictionController extends Controller
 
         $response = Http::post('http://localhost:8000/predict-diabetes', $numericData);
 
-        if($resposne->successful()){
-            
+        if($response->successful()){
+            $risk = $response->json()['risk'];
+
+            // cuvanje u Prediction bazu
+            Prediction::create([
+                'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
+                'type' => 'diabetes',
+                'input_data' => $numericData,
+                'result' => $risk
+            ]);
+
+
+
+            return view('diabetes-result',['risk' => $risk]);
         }
 
+        return "Greska: Python server nije dostupan";
+
+    }
 
 
+    public function history()
+    {
+        $predictions = Prediction::where('user_id',auth()->id())->orderBy('created_at','desc')->get();
+
+        return view('history',compact('predictions'));
     }
 
 

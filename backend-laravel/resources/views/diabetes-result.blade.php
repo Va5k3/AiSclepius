@@ -7,7 +7,7 @@
                 @if($risk == 1)
                     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
                         <p class="font-bold">VISOK RIZIK</p>
-                        <p>AI model detektuje indikatore srčanog oboljenja.</p>
+                        <p>AI model detektuje indikatore diabetesa</p>
                     </div>
                 @else
                     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
@@ -16,7 +16,7 @@
                     </div>
                 @endif
 
-                <a href="{{ route('heart.check') }}" class="mt-6 inline-block text-indigo-600 hover:underline">Nazad na test</a>
+                <a href="{{ route('diabetes.check') }}" class="mt-6 inline-block text-indigo-600 hover:underline">Nazad na test</a>
             </div>
         </div>
     </div>
