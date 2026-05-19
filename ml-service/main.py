@@ -17,7 +17,10 @@ diabetes_explainer = shap.TreeExplainer(diabetes_model)
 @app.get("/", tags=["General"]) 
 def read_root():
     if heart_model and diabetes_model: 
-        return {"status": "HealthAI Service is running."} 
+        if heart_explainer and diabetes_explainer:
+            return {"status":"HealthAI Service is running."}
+    return {"status": "Models works, explainer problem."} 
+        
 
 @app.post("/predict-heart", tags=["Prediction"]) 
 def predict_heart(data: list = Body(...)):
@@ -39,4 +42,14 @@ def predict_heart(data: list = Body(...)):
 def predict_diabetes(data: list = Body(...)):
     input_data = np.array(data).reshape(1,-1)
     prediction = diabetes_model.predict(input_data)
-    return{"risk": int(prediction[0])}
+
+    shap_values = diabetes_explainer.shap_values(input_data);
+
+    if isinstance(shap_values, list):
+        current_shape = shap_values[1][0].tolist()
+    else:
+        current_shape = shap_values[0][:, 1].tolist() if len(shap_values.shape) > 2 else shap_values[0].tolist()
+
+
+    return{"risk": int(prediction[0]),
+           "shap_values" : current_shape}
