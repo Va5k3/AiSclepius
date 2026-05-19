@@ -36,16 +36,18 @@
                                             Pol/Trudnoće: {{ $prediction->input_data[1] ?? '/' }}, 
                                             Pritisak/Glukoza: {{ $prediction->input_data[2] ?? '/' }}...
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            @if($prediction->result == 1)
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                                    Povišen Rizik
-                                                </span>
-                                            @else
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                    Nizak Rizik
-                                                </span>
-                                            @endif
+                                       <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <a href="{{ route('predict.show', $prediction->id) }}" class="inline-block group">
+                                                @if($prediction->result == 1)
+                                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-red-100 text-red-800 border border-red-300 group-hover:bg-red-200 transition cursor-pointer">
+                                                        ⚠️ Povišen Rizik (Pogledaj detaljno)
+                                                    </span>
+                                                @else
+                                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-bold rounded-full bg-green-100 text-green-800 border border-green-300 group-hover:bg-green-200 transition cursor-pointer">
+                                                        ✓ Nizak Rizik (Pogledaj detaljno)
+                                                    </span>
+                                                @endif
+                                            </a>
                                         </td>
                                     </tr>
                                 @endforeach

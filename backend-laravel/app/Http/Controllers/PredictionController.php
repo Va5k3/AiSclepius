@@ -39,6 +39,7 @@ class PredictionController extends Controller
                 'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
                 'type' => 'heart',
                 'input_data' => $numericData,
+                'shap_values' => $shapValue,
                 'result' => $risk
             ]);
 
@@ -46,7 +47,8 @@ class PredictionController extends Controller
             return view('heart-result', [
                 'risk' => $risk,
                 'shap_values' => $shapValue,
-                'inputs' => $numericData
+                'inputs' => $numericData,
+                'shap_values' => $shapValue
                 ]); // prikazujemo stranicu sa rezultatom, to je fajl heart-result.blade.php, i prosledju
         }
     
@@ -65,18 +67,24 @@ class PredictionController extends Controller
 
         if($response->successful()){
             $risk = $response->json()['risk'];
+            $shapValue = $response->json()['shap_values'];
 
             // cuvanje u Prediction bazu
             Prediction::create([
                 'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
                 'type' => 'diabetes',
                 'input_data' => $numericData,
+                'shap_values' => $shapValue,
                 'result' => $risk
             ]);
 
 
 
-            return view('diabetes-result',['risk' => $risk]);
+            return view('diabetes-result',[
+                'risk' => $risk,
+                'shap_values' => $shapValue,
+                'inputs'=>$numericData
+            ]);
         }
 
         return "Greska: Python server nije dostupan";
@@ -91,5 +99,19 @@ class PredictionController extends Controller
         return view('history',compact('predictions'));
     }
 
+    public function show($id){
+        $prediction = Prediction::where('id', $id)
+                                ->where('user_id',auth()->id())
+                                -> firstOrFail();
+        
+        $viewName = $prediction->type== 'heart' ? 'heart-result' : 'diabetes-result';
+        return view($viewName, [
+            'risk' => $prediction->result,
+            'shap_values' => $prediction->shap_values,
+            'inputs' => $prediction->input_data
+        ]);
+
+
+    }
 
 }

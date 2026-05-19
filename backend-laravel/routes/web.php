@@ -30,6 +30,13 @@ Route::middleware('auth')->group(function () {
 
     //history
     Route::get('/history',[PredictionController::class, 'history'])->name('predict.history');
+    Route::get('/history/{id}', [PredictionController::class, 'show'])->name('predict.show');
+
+    //video-call (Telemedecine)
+    // ne znam zasto ovde mora cela putanja, nesto je spomenuo jer trazimo model a ne kontroler
+    Route::get('/appointment/{id}/room', [App\Http\Controllers\AppointmentController::class, 'joinRoom'])->name('video.room');
+    Route::post('/appointment/{id}/finish', [App\Http\Controllers\AppointmentController::class, 'finishRoom'])->name('video.finish');
+
 
 });
 

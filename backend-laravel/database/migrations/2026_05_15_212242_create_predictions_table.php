@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('predictions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');  
             $table->string('type');
             $table->json('input_data');
             $table->integer('result');

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Prediction extends Model
 {
     
-    protected $fillable = ['user_id', 'type', 'input_data', 'result'];
+    protected $fillable = ['user_id', 'type', 'input_data','shap_values', 'result']; 
 
-    protected $casts = [
-        'input_data' => 'array'
+    protected $casts = [ 
+        'input_data' => 'array',
+        'shap_values' => 'array'
     ];
 
 
