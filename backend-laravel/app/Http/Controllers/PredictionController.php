@@ -110,8 +110,7 @@ class PredictionController extends Controller
             'shap_values' => $prediction->shap_values,
             'inputs' => $prediction->input_data
         ]);
-
-
     }
+    
 
 }
