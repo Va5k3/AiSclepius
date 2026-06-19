@@ -1,6 +1,5 @@
 <div class="space-y-10">
   
-  <!-- Info Baner za Dijabetes -->
   <div class="relative overflow-hidden bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 rounded-3xl p-8 md:p-10 text-white shadow-xl shadow-slate-900/10 border border-slate-800/60">
     <div class="absolute -right-10 -top-10 w-44 h-44 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
     <div class="relative z-10 max-w-2xl">
@@ -10,53 +9,141 @@
     </div>
   </div>
 
-  <!-- Radni prostor: Forma + Desne Info Kartice -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
     
-    <!-- Forma za unos (2 Kolone) -->
     <div class="lg:col-span-2 bg-white rounded-3xl p-8 border border-slate-200/60 shadow-sm space-y-6">
       <div class="border-b border-slate-100 pb-4">
-        <h3 class="text-lg font-bold text-slate-800">Metabolički parametri</h3>
-        <p class="text-xs text-slate-400">Unesite tačne laboratorijske i antropometrijske vrednosti.</p>
+        <h3 class="text-lg font-bold text-slate-800">Analiza rizika od dijabetesa</h3>
+        <p class="text-xs text-slate-400">Sva polja su obavezna za precizan proračun neuralne mreže.</p>
       </div>
 
-      <form class="space-y-6">
+      <form (submit)="onSubmti($event)" class="space-y-6">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Nivo Glukoze (Našte)</label>
-            <input type="number" step="0.1" placeholder="mmol/L" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Broj trudnoća (Pregnancies)</label>
+            <input type="number" name="pregnancies" [(ngModel)]="diabetesData.pregnacies" placeholder="npr. 0 ili više" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">HbA1c (Glikozilirani hemoglobin)</label>
-            <input type="number" step="0.1" placeholder="%" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Glukoza (Glucose)</label>
+            <input type="number" name="glucose" [(ngModel)]="diabetesData.glucose" placeholder="Koncentracija glukoze u plazmi" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
           </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Težina i Visina (BMI Kalkulator)</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input type="number" placeholder="kg" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
-              <input type="number" placeholder="cm" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
-            </div>
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Krvni pritisak (BloodPressure)</label>
+            <input type="number" name="bloodPressure" [(ngModel)]="diabetesData.bloodPressure" placeholder="Dijastolni pritisak (mmHg)" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
           </div>
           <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Obim struka</label>
-            <input type="number" placeholder="cm" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Debljina kože (SkinThickness)</label>
+            <input type="number" name="skinThickness" [(ngModel)]="diabetesData.skinThickness" placeholder="Debljina kožnog nabora tricepsa (mm)" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Insulin</label>
+            <input type="number" name="insulin" [(ngModel)]="diabetesData.insulin" placeholder="2-satni serumski insulin (mu U/ml)" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">BMI (npr. 26.5)</label>
+            <input type="number" step="0.1" name="bmi" [(ngModel)]="diabetesData.bmi" placeholder="Indeks telesne mase" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">DPF (npr. 0.45)</label>
+            <input type="number" step="0.001" name="dpf" [(ngModel)]="diabetesData.dpf" placeholder="Diabetes Pedigree Function" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-2">Godine (Age)</label>
+            <input type="number" name="age" [(ngModel)]="diabetesData.age" placeholder="Starost pacijenta" class="w-full bg-slate-50/50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-2xl px-4 py-3.5 text-sm text-slate-800 font-medium outline-none transition-all duration-300">
           </div>
         </div>
 
         <div class="pt-4">
-          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold text-sm py-4 rounded-2xl shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 active:scale-[0.99] transition-all duration-300 flex items-center justify-center space-x-2 group">
-            <svg class="w-5 h-5 group-hover:rotate-12 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547"></path></svg>
-            <span>Izračunaj Metabolički Indeks</span>
+          <button type="submit" [disabled]="isLoading" 
+            [className]="isLoading 
+              ? 'w-full bg-slate-400 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 cursor-not-allowed shadow-md' 
+              : 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20 active:scale-[0.99]'">
+            
+            <span *ngIf="isLoading" class="flex items-center gap-2">
+              <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Neuralna mreža računa...
+            </span>
+            
+            <span *ngIf="!isLoading">
+              Pokreni Neuralnu Analizu
+            </span>
           </button>
         </div>
       </form>
+
+      <div *ngIf="errorMessage" class="p-4 bg-red-50 border border-red-200 rounded-2xl mt-4">
+        <p class="text-xs font-bold text-red-600 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 bg-red-600 rounded-full animate-pulse"></span>
+          {{ errorMessage }}
+        </p>
+      </div>
+
+      <div *ngIf="apiResult" class="transition-all duration-500 ease-out opacity-100 translate-y-0 mt-6 animate-fade-in">
+        <div class="bg-slate-50 border border-slate-200/60 rounded-3xl overflow-hidden shadow-sm">
+          
+          <div class="bg-slate-900 text-white px-6 py-4 flex items-center gap-2">
+            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
+            <h3 class="text-sm font-black tracking-wide uppercase">Rezultat AI Analize</h3>
+          </div>
+          
+          <div class="p-6 space-y-6">
+            <div [className]="apiResult.risk === 1 
+              ? 'p-5 bg-red-50 border border-red-200/60 rounded-2xl text-center border-l-4 border-l-red-600 shadow-sm shadow-red-500/5' 
+              : 'p-5 bg-emerald-50 border border-emerald-200/60 rounded-2xl text-center border-l-4 border-l-emerald-600 shadow-sm shadow-emerald-500/5'">
+              <span class="text-xs font-bold text-slate-500 block mb-1">Procena metaboličkog rizika:</span>
+              <h2 [className]="apiResult.risk === 1 
+                ? 'text-xl font-black text-red-700 tracking-tight' 
+                : 'text-xl font-black text-emerald-700 tracking-tight'">
+                {{ apiResult.risk === 1 ? 'POVIŠEN RIZIK OD DIJABETESA (TIP-2)' : 'NIZAK RIZIK OD DIJABETESA (TIP-2)' }}
+              </h2>
+            </div>
+
+            <div class="border-t border-slate-200/60 my-4"></div>
+
+            <div class="space-y-3">
+              <h4 class="text-xs font-bold text-slate-700 uppercase tracking-wider">Uticaj biomarkera na odluku modela (SHAP):</h4>
+              <p class="text-xs text-slate-400 leading-relaxed">Pozitivne vrednosti guraju koficijent ka dijabetesu, dok negativne vrednosti označavaju protektivni metabolizam:</p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5 pt-2">
+                <div *ngFor="let value of apiResult.shap_values; let i = index" class="bg-white border border-slate-200 p-3 rounded-xl flex flex-col justify-between shadow-2v">
+                  <span class="text-[10px] font-bold text-slate-400 uppercase">
+                    {{ 
+                      i === 0 ? 'Trudnoće' :
+                      i === 1 ? 'Nivo Glukoze' :
+                      i === 2 ? 'Krvni Pritisak' :
+                      i === 3 ? 'Debljina Kože' :
+                      i === 4 ? 'Insulin' :
+                      i === 5 ? 'BMI' :
+                      i === 6 ? 'DPF (Genetika)' :
+                      i === 7 ? 'Godine života' : 'Metabolički Faktor ' + (i + 1)
+                    }}
+                  </span>
+                  <span [className]="value >= 0 ? 'text-xs font-black text-red-600 mt-1 font-mono' : 'text-xs font-black text-emerald-600 mt-1 font-mono'">
+                    {{ value >= 0 ? '+' : '' }}{{ value | number:'1.2-4' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Desni Info Panel (1 Kolona) -->
     <div class="space-y-6">
+      
       <div class="bg-white rounded-3xl p-6 border border-slate-200/60 shadow-sm flex flex-col justify-between h-48">
         <div class="flex items-center justify-between">
           <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest block">Status Modela</span>
@@ -69,7 +156,23 @@
           <h4 class="text-2xl font-black text-slate-800 tracking-tight">GlucoPredict v1.9</h4>
           <p class="text-xs text-slate-400 mt-1">Spreman za evaluaciju unetih glikemičkih indeksa u realnom vremenu.</p>
         </div>
+        <div class="bg-slate-50 border border-slate-100 rounded-xl px-3 py-2 text-[11px] font-bold text-slate-500 flex items-center space-x-2">
+          <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+          <span>Enkripcija podataka aktivna (AES-256)</span>
+        </div>
       </div>
+
+      <div class="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-3xl p-6 text-white shadow-lg shadow-blue-500/10 flex flex-col justify-between h-64 relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+        <div>
+          <svg class="w-8 h-8 text-white/80 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+          <h4 class="text-lg font-bold tracking-tight">Prevencija Dijabetesa</h4>
+          <p class="text-blue-100 text-xs leading-relaxed mt-2 font-medium">Modifikacija stila života, rano otkrivanje kroz sklirining i kontrola BMI indeksa mogu odložiti ili u potpunosti sprečiti razvoj dijabetesa tipa 2 kod visokorizičnih pacijenata.</p>
+        </div>
+      </div>
+
     </div>
 
   </div>

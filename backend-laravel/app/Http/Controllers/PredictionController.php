@@ -9,6 +9,7 @@ use App\Models\Prediction;
 
 class PredictionController extends Controller
 {
+    private string $urlAPI = "http://localhost:8000";
 
     // FORMS - GET REQUESTS
     public function heartForm(){
@@ -21,82 +22,144 @@ class PredictionController extends Controller
     
     // PREDICTIONS - POST REQUESTS
 
-    public function predictHeart(Request $request)
-    {
-        // kupimo podatke iz forme
-        $data = $request->input('data'); // data je ime inputa u formi, to je niz koji sadrzi sve podatke koje je korisnik uneo u formu
-        $numericData = array_map(function($value) {
-            return is_numeric($value) ? (float)$value : 0;
-        }, $data); 
-    
-        $response = Http::post('http://localhost:8000/predict-heart', $numericData);
 
-        if ($response->successful()){
+public function predictHeart(Request $request)
+{
+    
+        $age          = (float) $request->input('age', 0);
+        $genderText   = $request->input('gender', 'muški');
+        $genderValue  = ($genderText === 'muški' || $genderText == '1') ? 1.0 : 0.0;
+        $systolic_bp  = (float) $request->input('systolic_bp', 0);
+        $diastolic_bp = (float) $request->input('diastolic_bp', 0);
+        $cholesterol  = (float) $request->input('cholesterol', 0);
+        $bmi          = (float) $request->input('bmi', 0);
+        
+        // Angular salje true/false ili 1/0 za checkbox-ove
+        $smoking      = $request->input('smoking') ? 1.0 : 0.0;
+        $family_hist  = $request->input('family_history') ? 1.0 : 0.0;
+
+        $numericData = [
+            $age,
+            $genderValue,
+            2.0, // Privremena vrednost za indeks koji nedostaje u Angularu
+            $systolic_bp,
+            $diastolic_bp,
+            $cholesterol,
+            2.0,
+            $bmi,
+            $smoking,
+            2.0,
+            $family_hist,
+            2.0,
+            2.0
+        ];
+    try {
+        // Saljemo niz brojeva Python serveru na port 8000
+        $mlService = env('ML_SERVICE_URL',$this->urlAPI);
+        $response = Http::post($mlService.'/predict-heart', $numericData);
+
+        if ($response->successful()) {
             $risk = $response->json()['risk'];
             $shapValue = $response->json()['shap_values'];
-            // cuvanje u Prediction bazu
+            
+            // Rešavamo "user_id cannot be null" grešku: ako niko nije ulogovan, stavljamo ID 1
+            $currentUserId = auth()->id() ?: 1; 
+
+            // Čuvanje u bazu podataka
             Prediction::create([
-                'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
+                'user_id' => $currentUserId, 
                 'type' => 'heart',
                 'input_data' => $numericData,
                 'shap_values' => $shapValue,
                 'result' => $risk
             ]);
 
+            
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'success' => true,
+                    'risk' => $risk,
+                    'shap_values' => $shapValue
+                ]);
+            }
 
-            return view('heart-result', [
-                'risk' => $risk,
-                'shap_values' => $shapValue,
-                'inputs' => $numericData,
-                'shap_values' => $shapValue
-                ]); // prikazujemo stranicu sa rezultatom, to je fajl heart-result.blade.php, i prosledju
         }
-    
-        return "Greska: Python server nije dostupan"; 
-    }
 
+        return response()->json(['success' => false, 'message' => 'Python server je vratio grešku.'], 502);
+
+    } catch (\Exception $e) {
+        return response()->json(['success' => false, 'message' => 'Greška u komunikaciji: ' . $e->getMessage()], 502);
+    }
+}
 
     public function predictDiabetes(Request $request){
         
-        $data = $request->input('data');
-        $numericData = array_map(function($val){
-            return is_numeric($val) ? (float)$val : 0;
-        }, $data);
+        $pregnancies   = (float) $request->input('pregnacies', 0);
+        $glucose       = (float) $request->input('glucose', 0);
+        $bloodPressure = (float) $request->input('bloodPressure', 0);
+        $skinThickness = (float) $request->input('skinThickness', 0);
+        $insulin       = (float) $request->input('insulin', 0);
+        $bmi           = (float) $request->input('bmi', 0);
+        $dpf           = (float) $request->input('dpf', 0);
+        $age           = (float) $request->input('age', 0);
 
-        $response = Http::post('http://localhost:8000/predict-diabetes', $numericData);
+        $numericData = [
+                $pregnancies,
+                $glucose,
+                $bloodPressure,
+                $skinThickness,
+                $insulin,
+                $bmi,
+                $dpf,
+                $age
+            ];
 
-        if($response->successful()){
-            $risk = $response->json()['risk'];
-            $shapValue = $response->json()['shap_values'];
+        try{
+            $mlService = env('ML_SERVICE_URL',$this->urlAPI);
+            $response = Http::post($mlService.'/predict-diabetes', $numericData);
+            if($response->successful()){
+                $risk = $response->json()['risk'];
+                $shapValue = $response->json()['shap_values'];
 
-            // cuvanje u Prediction bazu
-            Prediction::create([
-                'user_id' => auth()->id(), # id trenutnog ulogovanog korisnika
-                'type' => 'diabetes',
-                'input_data' => $numericData,
-                'shap_values' => $shapValue,
-                'result' => $risk
-            ]);
-
-
-
-            return view('diabetes-result',[
-                'risk' => $risk,
-                'shap_values' => $shapValue,
-                'inputs'=>$numericData
-            ]);
+               
+                // cuvanje u Prediction bazu
+                Prediction::create([
+                    'user_id' => (auth()->id()) ?: 1, # id trenutnog ulogovanog korisnika
+                    'type' => 'diabetes',
+                    'input_data' => $numericData,
+                    'shap_values' => $shapValue,
+                    'result' => $risk
+                ]);
+    
+                return response()->json([
+                    'success' => true,
+                    'risk' => $risk,
+                    'shap_values' => $shapValue
+                ]);
+            }
+            return response()->json(['success' => false, 'message' => 'Python server je vratio neispravan odgovor.'], 502);
+        }
+        catch(\Exception $ex){
+            return response()->json(['success' =>false, 'message'=> 'Python server nije dostupan'.$ex->getMessage()],502);
         }
 
-        return "Greska: Python server nije dostupan";
+
 
     }
 
 
     public function history()
     {
-        $predictions = Prediction::where('user_id',auth()->id())->orderBy('created_at','desc')->get();
 
-        return view('history',compact('predictions'));
+        $predictions = Prediction::where('user_id',auth()->id())->orderBy('created_at','desc')->get();
+        $predictions->transform(function ($item) {
+            $item->input_data = $item->input_data;
+            $item->shap_values = $item->shap_values;
+            return $item;
+        });
+
+        return (['success' => true,
+                'history' => $predictions]);
     }
 
     public function show($id){
@@ -104,13 +167,18 @@ class PredictionController extends Controller
                                 ->where('user_id',auth()->id())
                                 -> firstOrFail();
         
-        $viewName = $prediction->type== 'heart' ? 'heart-result' : 'diabetes-result';
-        return view($viewName, [
+        
+
+        return ([
+            'id' => $prediction->id,
+            'type' => $prediction->type,
             'risk' => $prediction->result,
             'shap_values' => $prediction->shap_values,
-            'inputs' => $prediction->input_data
+            'input_values' => $prediction->input_data,
+           
         ]);
     }
     
 
 }
+        

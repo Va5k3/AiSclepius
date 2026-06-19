@@ -19,7 +19,8 @@ def read_root():
     if heart_model and diabetes_model: 
         if heart_explainer and diabetes_explainer:
             return {"status":"HealthAI Service is running."}
-    return {"status": "Models works, explainer problem."} 
+        return {"status": "Models works, explainer problem."} 
+    return {"status": "Models doesn't work."}
         
 
 @app.post("/predict-heart", tags=["Prediction"]) 
