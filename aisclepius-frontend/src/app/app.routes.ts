@@ -27,7 +27,7 @@ export const routes: Routes = [
             { path: 'heart-check', component: HeartCheck },
             { path: 'diabetes-check', component: DiabetesCheck },
             { path: 'history', component: History },
-            { path: 'appointment/:id/room', component: VideoRoom },
+            { path: 'appointment/1/room', component: VideoRoom },
         ]
     },
 

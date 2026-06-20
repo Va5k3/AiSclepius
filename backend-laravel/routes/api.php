@@ -4,8 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PredictionController; 
+use App\Http\Controllers\AppointmentController; 
 
-// Tvoja nova API login ruta
+
 Route::post('/login', function (Request $request) {
     $credentials = $request->only('email', 'password');
 
@@ -31,3 +32,9 @@ Route::post('/login', function (Request $request) {
 Route::post('/predict-heart', [PredictionController::class, 'predictHeart'])->name('predict.heart');
 //diabetes-check
 Route::post('/predict-diabetes',[PredictionController::class,'predictDiabetes'])->name('predict.diabetes');
+
+Route::get('/history',[PredictionController::class, 'history'])->name('predict.history');
+   
+Route::get('/appointments', [AppointmentController::class, 'index']); 
+Route::get('/appointment/{id}/room', [AppointmentController::class, 'joinRoom']);
+Route::post('/appointment/{id}/finish', [AppointmentController::class, 'finishRoom']);

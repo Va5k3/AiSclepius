@@ -183,3 +183,22 @@
 
   </div>
 </div>
+<div *ngIf="apiResult && apiResult.risk === 0 && showGif"
+     class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+
+  <img
+    src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZjFsYXYyNzN3a2kxY3Q4ZmNnY21qMnd0N25vdDd0MWc1bm96bHpuNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/R6gvnAxj2ISzJdbA63/giphy.gif"
+    alt="Happy"
+    class="w-64 rounded-2xl shadow-2xl animate-bounce"
+  />
+</div>
+
+<div *ngIf="apiResult && apiResult.risk === 1 && showGif"
+     class="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
+
+  <img
+    src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExeW9jNDc3b20xM2Y1enpiMm0zOHR1OWpoZ2M3NmRvZDl3azRzN3ByayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Ty9Sg8oHghPWg/giphy.gif"
+    alt="Sad"
+    class="w-64 rounded-2xl shadow-2xl animate-bounce"
+  />
+</div>

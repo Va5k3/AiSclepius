@@ -26,6 +26,7 @@ export class HeartCheck {
   isLoading = false; // animacija ucitavanja
   apiResult: any = null; 
   errorMessage = '';
+  showGif = false;
 
   // 1. Ubacujemo ChangeDetectorRef u konstruktor
   constructor(
@@ -39,6 +40,7 @@ export class HeartCheck {
     this.isLoading = true;
     this.errorMessage = '';
     this.apiResult = null;
+    this.showGif = true;
 
     console.log('Saljem podatke na analizu: ', this.heartData);
 
@@ -48,7 +50,24 @@ export class HeartCheck {
         this.apiResult = response; // Cuvamo uspešan rezultat (procena rizika)
         console.log("Rezultat iz Laravela : ", response);
         
-        // 2. Ručno pokrećemo osvežavanje HTML šablona
+         //sound
+        if (response && response.success) {
+        this.showGif = true;
+        // Ako je rizik 1 
+        if (response.risk === 1) {
+          const sadAudio = new Audio('sounds/sadShort.mp3');
+          sadAudio.play().catch(err => console.log("Audio bloker u brauzeru:", err));
+        } 
+        // Ako je rizik 0 
+        else {
+          const happyAudio = new Audio('sounds/rizz.mp3');
+          happyAudio.play().catch(err => console.log("Audio bloker u brauzeru:", err));
+          }
+          setTimeout(() => {
+            this.showGif = false; 
+            this.cdr.detectChanges(); // Javlja Angularu da skloni medu sa ekrana
+            }, 3000);
+            }
         this.cdr.detectChanges();
       },
       error: (err) => {
@@ -57,6 +76,7 @@ export class HeartCheck {
         console.error(err);
         
         // Takođe osvežavamo šablon u slučaju greške da se ugasi loader
+        
         this.cdr.detectChanges();
       }
     });

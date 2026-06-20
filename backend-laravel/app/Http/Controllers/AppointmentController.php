@@ -7,38 +7,40 @@ use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
 {
+    //test
+    public function index()
+    {
+        
+        return response()->json([
+            [
+                'id' => 123,
+                'room_name' => 'test-soba-123',
+                'status' => 'scheduled'
+            ]
+        ]);
+    }
+
     public function joinRoom($id)
     {
-        // Pronađi pregled, ali dozvoli pristup SAMO lekaru ili pacijentu koji su vezani za taj pregled
-       $appointment = Appointment::where('id', $id)
-            ->where(function($query) {
-                $query->where('doctor_id', auth()->id())
-                      ->orWhere('patient_id', auth()->id());
-            })->firstOrFail();
-
-        
-        // Određivanje uloge ulogovanog korisnika
-        $role = (auth()->id() === $appointment->doctor_id) ? 'doctor' : 'patient';
-        
-        // Ako lekar ulazi, a pregled je tek zakazan, promeni status u "aktivan"
-        if ($role === 'doctor' && $appointment->status === 'scheduled') {
-            $appointment->update(['status' => 'active']);
-            }
-            
-            return view('video-room', [
-                'appointment' => $appointment,
-                'roomName' => $appointment->room_name,
-                'role' => $role
-                ]);
-                }
-               
+       
+        return response()->json([
+            'appointment' => [
+                'id' => $id,
+                'room_name' => 'test-soba-123',
+                'status' => 'active'
+            ],
+            'roomName' => "AiSclepius-SecureRoom-test-soba-123",
+            'role' => 'doctor',
+            'userName' => 'Test Doktor'
+        ]);
+    }
 
     public function finishRoom($id)
     {
-        // Samo lekar može zvanično da završi pregled
-        $appointment = Appointment::where('id', $id)->where('doctor_id', auth()->id())->firstOrFail();
-        $appointment->update(['status' => 'finished']);
-
-        return redirect()->route('dashboard')->with('success', 'Pregled je uspešno završen.');
+       
+        return response()->json([
+            'success' => true,
+            'message' => 'Pregled uspešno završen.'
+        ]);
     }
 }

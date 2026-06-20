@@ -1,1 +1,45 @@
-<p>video-room works!</p>
+@if (roomData) {
+  <div class="p-6 bg-gray-50 min-h-screen">
+    
+    <div class="flex justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+      <h2 class="font-semibold text-xl text-gray-800 flex items-center gap-2">
+        🩺 Telemedicina: Uživo Konsultacija
+      </h2>
+      
+      @if (roomData.role === 'doctor') {
+        <button (click)="finishAppointment()" 
+                class="px-5 py-2 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition shadow-md text-sm">
+          🛑 Završi Pregled i Poziv
+        </button>
+      }
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-white overflow-hidden shadow-sm rounded-2xl p-6 border border-gray-200">
+        
+        <div id="jitsi-container" 
+             class="w-full bg-gray-950 rounded-2xl overflow-hidden shadow-inner border border-gray-300" 
+             style="height: 650px; min-height: 650px;">
+        </div>
+
+        <div class="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-gray-500 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="flex items-center gap-2">
+            <span>🔒 Veza je enkriptovana i potpuno besplatna (Jitsi Open-Source).</span>
+          </p>
+          <a routerLink="/dashboard" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg font-semibold transition text-xs">
+            Izađi na Dashboard
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="w-full h-screen flex flex-col items-center justify-center bg-gray-50 p-5">
+    <div class="text-center">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-500 mx-auto mb-4"></div>
+      <p class="text-xl font-semibold text-gray-600">Učitavanje video ordinacije...</p>
+      <p class="text-sm text-gray-400 mt-1">Povezivanje sa AiSclepius serverom...</p>
+    </div>
+  </div>
+}

@@ -27,6 +27,7 @@ export class DiabetesCheck {
   isLoading = false;
   apiResult: any = null;
   errorMessage = '';
+  showGif = false;
 
   constructor(
     private diabetesCheckService : DiabetesCheckService,
@@ -47,6 +48,25 @@ export class DiabetesCheck {
         this.isLoading = false;
         this.apiResult = response;
         console.log("Rezultat iz laravel : ", response);
+
+        //sound
+        if (response && response.success) {
+        this.showGif = true;
+        // Ako je rizik 1 
+        if (response.risk === 1) {
+          const sadAudio = new Audio('sounds/sadShort.mp3');
+          sadAudio.play().catch(err => console.log("Audio bloker u brauzeru:", err));
+        } 
+        // Ako je rizik 0 
+        else {
+          const happyAudio = new Audio('sounds/happy2.mp3');
+          happyAudio.play().catch(err => console.log("Audio bloker u brauzeru:", err));
+          }
+          setTimeout(() => {
+            this.showGif = false; 
+            this.cdr.detectChanges(); // Javlja Angularu da skloni medu sa ekrana
+            }, 3000);
+            }
 
         this.cdr.detectChanges();
       },

@@ -44,7 +44,6 @@
       <table class="w-full text-left border-collapse">
         <thead>
           <tr class="bg-slate-50/75 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-            <th class="px-6 py-4">ID</th>
             <th class="px-6 py-4">Tip Analize</th>
             <th class="px-6 py-4">Datum i Vreme</th>
             <th class="px-6 py-4">Klinički Inputi (Prva 3)</th>
@@ -54,7 +53,6 @@
         <tbody class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
           <tr *ngFor="let item of historyList" class="hover:bg-slate-50/50 transition-colors">
             
-            <td class="px-6 py-4 text-xs font-mono text-slate-400">#{{ item.id }}</td>
             
             <td class="px-6 py-4">
               <span *ngIf="item.type === 'heart'" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-100">
@@ -73,7 +71,7 @@
             
             <td class="px-6 py-4 text-xs font-mono text-slate-400">
               <span *ngIf="item.input_data">
-                [{{ item.input_data[0] }}, {{ item.input_data[1] }}, {{ item.input_data[2] }}...]
+                [{{ item.input_data[0] }}, {{ item.input_data[1] }}, {{ item.input_data[2] }}, {{ item.input_data[3] }}, {{ item.input_data[4] }}, {{ item.input_data[5] }}, {{ item.input_data[6] }}, {{ item.input_data[7] }}, {{ item.input_data[8] }}]
               </span>
             </td>
             

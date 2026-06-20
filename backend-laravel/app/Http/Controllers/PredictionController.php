@@ -41,17 +41,17 @@ public function predictHeart(Request $request)
         $numericData = [
             $age,
             $genderValue,
-            2.0, // Privremena vrednost za indeks koji nedostaje u Angularu
+            0, // Privremena vrednost za indeks koji nedostaje u Angularu
             $systolic_bp,
             $diastolic_bp,
             $cholesterol,
-            2.0,
+            0,
             $bmi,
             $smoking,
-            2.0,
+            0,
             $family_hist,
-            2.0,
-            2.0
+            0,
+            0
         ];
     try {
         // Saljemo niz brojeva Python serveru na port 8000
@@ -62,12 +62,10 @@ public function predictHeart(Request $request)
             $risk = $response->json()['risk'];
             $shapValue = $response->json()['shap_values'];
             
-            // Rešavamo "user_id cannot be null" grešku: ako niko nije ulogovan, stavljamo ID 1
-            $currentUserId = auth()->id() ?: 1; 
-
+          
             // Čuvanje u bazu podataka
-            Prediction::create([
-                'user_id' => $currentUserId, 
+            Prediction::create(['user_id' => auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),
+                
                 'type' => 'heart',
                 'input_data' => $numericData,
                 'shap_values' => $shapValue,
@@ -124,7 +122,7 @@ public function predictHeart(Request $request)
                
                 // cuvanje u Prediction bazu
                 Prediction::create([
-                    'user_id' => (auth()->id()) ?: 1, # id trenutnog ulogovanog korisnika
+                    'user_id' => auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),
                     'type' => 'diabetes',
                     'input_data' => $numericData,
                     'shap_values' => $shapValue,
@@ -151,10 +149,18 @@ public function predictHeart(Request $request)
     public function history()
     {
 
-        $predictions = Prediction::where('user_id',auth()->id())->orderBy('created_at','desc')->get();
+        $predictions = Prediction::where('user_id',auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),)->orderBy('created_at','desc')->get();
+       
+        if ($predictions->isEmpty()) {
+        $predictions = Prediction::where('user_id', 1)
+                                 ->orderBy('created_at', 'desc')
+                                 ->get();
+      }
+
+
         $predictions->transform(function ($item) {
-            $item->input_data = $item->input_data;
-            $item->shap_values = $item->shap_values;
+            $item->input_data = is_string($item->input_data) ? json_decode($item->input_data) : $item->input_data;
+            $item->shap_values = is_string($item->shap_values) ? json_decode($item->shap_values) : $item->shap_values;
             return $item;
         });
 
@@ -164,7 +170,7 @@ public function predictHeart(Request $request)
 
     public function show($id){
         $prediction = Prediction::where('id', $id)
-                                ->where('user_id',auth()->id())
+                                ->where('user_id',auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)))
                                 -> firstOrFail();
         
         
