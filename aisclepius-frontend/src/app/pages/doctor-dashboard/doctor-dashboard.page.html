@@ -1,0 +1,140 @@
+<div class="p-6 bg-[#070d19] min-h-screen text-slate-100 space-y-6">
+  
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0 bg-[#0d1527] border border-slate-800 p-6 rounded-3xl shadow-xl">
+    <div>
+      <h1 class="text-2xl font-black tracking-tight text-white">Doktorski Panel</h1>
+      <p class="text-xs text-slate-400 mt-1">Dobrodošli nazad. Pregled stanja Vaših pacijenata i zakazanih pregleda unutar AiSclepius sistema.</p>
+    </div>
+    <div class="flex items-center space-x-3 bg-[#070d19] px-4 py-2.5 rounded-xl border border-slate-800">
+      <span class="w-2.5 h-2.5 bg-[#10b981] rounded-full animate-pulse"></span>
+      <span class="text-xs font-bold text-slate-300">Sistem analitike operativan</span>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-[#0d1527] border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 shadow-lg">
+      <div class="p-3 bg-blue-500/10 rounded-xl text-blue-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Ukupno pacijenata</p>
+        <p class="text-xl font-black text-white mt-0.5">1,240</p>
+      </div>
+    </div>
+
+    <div class="bg-[#0d1527] border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 shadow-lg">
+      <div class="p-3 bg-red-500/10 rounded-xl text-red-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Visok rizik (AI)</p>
+        <p class="text-xl font-black text-red-400 mt-0.5">4 pacijenta</p>
+      </div>
+    </div>
+
+    <div class="bg-[#0d1527] border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 shadow-lg">
+      <div class="p-3 bg-[#02b290]/10 rounded-xl text-[#02b290]">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Danas zakazano</p>
+        <p class="text-xl font-black text-white mt-0.5">8 pregleda</p>
+      </div>
+    </div>
+
+    <div class="bg-[#0d1527] border border-slate-800 p-5 rounded-2xl flex items-center space-x-4 shadow-lg">
+      <div class="p-3 bg-purple-500/10 rounded-xl text-purple-400">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+      </div>
+      <div>
+        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">AI Analize (Ovaj mesec)</p>
+        <p class="text-xl font-black text-white mt-0.5">342</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    
+    <div class="lg:col-span-2 bg-[#0d1527] border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h2 class="text-lg font-bold text-white tracking-tight">Lista Pacijenata & AI Status</h2>
+        <input type="text" placeholder="Pretraži pacijente..." class="bg-[#070d19] border border-slate-800 rounded-xl px-4 py-2 text-xs text-white outline-none focus:border-[#02b290] transition-all w-48">
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs border-collapse">
+          <thead>
+            <tr class="text-slate-400 border-b border-slate-800 uppercase font-bold tracking-wider">
+              <th class="pb-3">Pacijent</th>
+              <th class="pb-3">Zadnji Pregled</th>
+              <th class="pb-3">AI Dijagnoza</th>
+              <th class="pb-3 text-right">Akcija</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-800/50">
+            <tr class="hover:bg-slate-800/20 transition-all">
+              <td class="py-3.5 font-semibold text-white">Nikola Jovanović</td>
+              <td class="py-3.5 text-slate-400">24. Jun 2026.</td>
+              <td class="py-3.5">
+                <span class="px-2.5 py-1 bg-red-500/10 text-red-400 rounded-lg font-bold">Kritičan rizik (Kardio)</span>
+              </td>
+              <td class="py-3.5 text-right">
+                <button class="bg-[#02b290] hover:bg-[#029a7c] text-white px-3 py-1.5 rounded-lg font-bold transition-all">Karton</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-800/20 transition-all">
+              <td class="py-3.5 font-semibold text-white">Milica Pavlović</td>
+              <td class="py-3.5 text-slate-400">22. Jun 2026.</td>
+              <td class="py-3.5">
+                <span class="px-2.5 py-1 bg-green-500/10 text-green-400 rounded-lg font-bold">Stabilno (Dijabetes)</span>
+              </td>
+              <td class="py-3.5 text-right">
+                <button class="bg-[#02b290] hover:bg-[#029a7c] text-white px-3 py-1.5 rounded-lg font-bold transition-all">Karton</button>
+              </td>
+            </tr>
+            <tr class="hover:bg-slate-800/20 transition-all">
+              <td class="py-3.5 font-semibold text-white">Marko Petrović</td>
+              <td class="py-3.5 text-slate-400">18. Jun 2026.</td>
+              <td class="py-3.5">
+                <span class="px-2.5 py-1 bg-yellow-500/10 text-yellow-400 rounded-lg font-bold">Umeren rizik</span>
+              </td>
+              <td class="py-3.5 text-right">
+                <button class="bg-[#02b290] hover:bg-[#029a7c] text-white px-3 py-1.5 rounded-lg font-bold transition-all">Karton</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="bg-[#0d1527] border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+      <h2 class="text-lg font-bold text-white tracking-tight">Današnji Video Pregledi</h2>
+      
+      <div class="space-y-3">
+        <div class="bg-[#070d19] border border-slate-800 p-4 rounded-xl flex flex-col space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-white">Jovan Aleksić</p>
+              <p class="text-[11px] text-slate-400">Termin: 14:30h</p>
+            </div>
+            <span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 text-[10px] font-bold rounded">Uskoro</span>
+          </div>
+          <a routerLink="/appointment/1/room" class="w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-lg py-2 transition-all block">
+            Pokreni Ordinaciju
+          </a>
+        </div>
+
+        <div class="bg-[#070d19] border border-slate-800 p-4 rounded-xl opacity-60">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-xs font-bold text-white">Jelena Kostić</p>
+              <p class="text-[11px] text-slate-400">Termin: 16:00h</p>
+            </div>
+            <span class="px-2 py-0.5 bg-slate-500/20 text-slate-400 text-[10px] font-bold rounded">Zakazano</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

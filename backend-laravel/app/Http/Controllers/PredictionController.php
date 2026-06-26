@@ -12,14 +12,14 @@ class PredictionController extends Controller
     private string $urlAPI = "http://localhost:8000";
 
     // FORMS - GET REQUESTS
-    public function heartForm(){
+   /* public function heartForm(){
         return view('heart-check'); // sta je view? to je fajl koji se nalazi u resources/views i on se koristi za prikazivanje stranice korisniku. U ovom slucaju, to je fajl heart-check.blade.php
-    }
-
-    public function diabetesForm(){
+    } OBRISATI
+*/         
+  /*  public function diabetesForm(){
         return view('diabetes-check');
-    }
-    
+    } OBRISATI
+    */
     // PREDICTIONS - POST REQUESTS
 
 
@@ -41,17 +41,17 @@ public function predictHeart(Request $request)
         $numericData = [
             $age,
             $genderValue,
-            0, // Privremena vrednost za indeks koji nedostaje u Angularu
+            1, // Privremena vrednost za indeks koji nedostaje u Angularu
             $systolic_bp,
             $diastolic_bp,
             $cholesterol,
-            0,
+            1,
             $bmi,
             $smoking,
-            0,
+            1,
             $family_hist,
-            0,
-            0
+            1,
+            1
         ];
     try {
         // Saljemo niz brojeva Python serveru na port 8000
@@ -62,10 +62,12 @@ public function predictHeart(Request $request)
             $risk = $response->json()['risk'];
             $shapValue = $response->json()['shap_values'];
             
+            $userID = auth('sanctum')->id() ?:1;
           
             // Čuvanje u bazu podataka
-            Prediction::create(['user_id' => auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),
-                
+            Prediction::create([
+
+                'user_id' => $userID ,
                 'type' => 'heart',
                 'input_data' => $numericData,
                 'shap_values' => $shapValue,
@@ -119,10 +121,10 @@ public function predictHeart(Request $request)
                 $risk = $response->json()['risk'];
                 $shapValue = $response->json()['shap_values'];
 
-               
+                $userID = auth('sanctum')->id() ?:1;
                 // cuvanje u Prediction bazu
                 Prediction::create([
-                    'user_id' => auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),
+                    'user_id' => $userID,
                     'type' => 'diabetes',
                     'input_data' => $numericData,
                     'shap_values' => $shapValue,
@@ -149,13 +151,19 @@ public function predictHeart(Request $request)
     public function history()
     {
 
-        $predictions = Prediction::where('user_id',auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)),)->orderBy('created_at','desc')->get();
+
+        $userID = auth('sanctum')->id();
+        if(!$userID){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Korisnik nije autentifikovan'
+            ],401);
+        }
+
+        $predictions = Prediction::where('user_id',$userID)
+                                        ->orderBy('created_at','desc')->get();
        
-        if ($predictions->isEmpty()) {
-        $predictions = Prediction::where('user_id', 1)
-                                 ->orderBy('created_at', 'desc')
-                                 ->get();
-      }
+        
 
 
         $predictions->transform(function ($item) {
@@ -164,26 +172,25 @@ public function predictHeart(Request $request)
             return $item;
         });
 
-        return (['success' => true,
-                'history' => $predictions]);
+        return response()->json(['success' => true,
+                'history' => $predictions],200);
     }
 
-    public function show($id){
-        $prediction = Prediction::where('id', $id)
-                                ->where('user_id',auth('sanctum')->id() ?: (auth('api')->id() ?: (auth()->id() ?: 1)))
-                                -> firstOrFail();
-        
-        
+   public function show($id){
+        $userId = auth('sanctum')->id() ?: (auth()->id() ?: 1);
 
-        return ([
+        $prediction = Prediction::where('id', $id)
+                                ->where('user_id', $userId)
+                                ->firstOrFail();
+
+        return response()->json([
             'id' => $prediction->id,
             'type' => $prediction->type,
             'risk' => $prediction->result,
             'shap_values' => $prediction->shap_values,
             'input_values' => $prediction->input_data,
-           
-        ]);
-    }
+        ], 200);
+}
     
 
 }

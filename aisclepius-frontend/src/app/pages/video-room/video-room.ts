@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 declare var JitsiMeetExternalAPI: any;
@@ -27,9 +27,13 @@ export class VideoRoom implements OnInit, OnDestroy {
   ngOnInit() {
     
     this.appointmentId = this.route.snapshot.paramMap.get('id')!;
+    const token = localStorage.getItem('auth_token');
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
 
     // Pozivamo Laravel i prosleđujemo taj ID
-    this.http.get(`http://localhost:8001/api/appointment/${this.appointmentId}/room`).subscribe({
+    this.http.get(`http://localhost:8001/api/appointment/${this.appointmentId}/room`, {headers}).subscribe({
       next: (res: any) => {
         this.roomData = res;
         
@@ -66,7 +70,12 @@ export class VideoRoom implements OnInit, OnDestroy {
   }
 
   finishAppointment(): void {
-    this.http.post(`http://localhost:8001/api/appointment/${this.appointmentId}/finish`, {})
+    const token = localStorage.getItem('auth_token');
+    const headers = new HttpHeaders({
+      'Authorization' : `Bearer ${token}`
+    })
+
+    this.http.post(`http://localhost:8001/api/appointment/${this.appointmentId}/finish`, {headers})
       .subscribe({
         next: () => {
           this.cleanUpJitsi();

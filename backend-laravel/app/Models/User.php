@@ -23,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -47,4 +48,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isDoctor(): bool{
+        return $this->role === 'doctor';
+    }
+
+    public function isPatient(): bool{
+        return $this->role === 'patient';
+    }
+
+
+
 }

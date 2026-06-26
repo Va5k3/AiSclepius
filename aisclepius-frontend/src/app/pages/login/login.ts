@@ -1,48 +1,43 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../services/auth';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms';     
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink], // Obavezno uvezi FormsModule i RouterLink
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.html',
-  styleUrl: './login.css'
+  styleUrls: ['./login.css'] 
 })
-export class Login {
-  // Promenljive u koje se automatski upisuje tekst iz input polja
-  email = '';
-  password = '';
+export class LoginComponent {
+  // Model koji se vezuje za HTML input polja
+  credentials = {
+    email: '',
+    password: ''
+  };
   errorMessage = '';
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
-  onLogin(event: Event) {
-    event.preventDefault(); // Sprečavamo osvežavanje stranice
-    this.errorMessage = ''; // Resetujemo poruku 
-
-    const apiUrl = 'http://localhost:8001/api/login'; // URL vašeg Laravel API-ja
-
-    const loginData = {
-      email: this.email,
-      password: this.password
-    };
-    console.log('Slanje na Laravel API:', loginData);
-
-    this.http.post<any>(apiUrl, loginData).subscribe({
-      next: (response) => { 
-        console.log('Odgovor sa Laravel API:', response);
-
-        if(response.success) {
-          localStorage.setItem('token', response.token);
-          this.router.navigate(['/dashboard']);
+  onLogin() {
+    this.errorMessage = '';
+    
+    this.authService.login(this.credentials).subscribe({
+      next: (res) => {
+        if (res.success) {
+          // Preusmeravanje na osnovu uloge dobijene sa Backenda
+          if (res.role === 'doctor') {
+            this.router.navigate(['/doctor-dashboard']);
+          } else {
+            this.router.navigate(['/dashboard']); // Tvoja podrazumevana ruta za pacijente
+          }
         }
       },
-      error: (error) => {
-        console.error('Greška prilikom logina:', error);
-        this.errorMessage = 'Neuspešan login. Proverite email i lozinku.';
+      error: (err) => {
+        this.errorMessage = err.error?.message || 'Pogrešan email ili lozinka.';
       }
     });
   }

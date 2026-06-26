@@ -1,1 +1,42 @@
-<p>register works!</p>
+<div class="min-h-screen flex items-center justify-center bg-[#070d19] p-6">
+  <div class="w-full max-w-md bg-[#0d1527] border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
+    
+    <div class="text-center">
+      <h2 class="text-2xl font-black text-white tracking-tight">Kreirajte AiSclepius Nalog</h2>
+      <p class="text-xs text-slate-400 mt-1">Izaberite ulogu i pristupite inteligentnoj platformi</p>
+    </div>
+
+    <form (submit)="onRegister()" class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Ime i prezime</label>
+        <input type="text" [(ngModel)]="registerData.name" name="name" required placeholder="Marko Marković" class="w-full bg-[#070d19] border border-slate-800 focus:border-[#10b981] rounded-xl px-4 py-3 text-sm text-white outline-none transition-all">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Email adresa</label>
+        <input type="email" [(ngModel)]="registerData.email" name="email" required placeholder="marko@email.com" class="w-full bg-[#070d19] border border-slate-800 focus:border-[#10b981] rounded-xl px-4 py-3 text-sm text-white outline-none transition-all">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Lozinka</label>
+        <input type="password" [(ngModel)]="registerData.password" name="password" required placeholder="Minimum 8 karaktera" class="w-full bg-[#070d19] border border-slate-800 focus:border-[#10b981] rounded-xl px-4 py-3 text-sm text-white outline-none transition-all">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Vaša uloga</label>
+        <select [(ngModel)]="registerData.role" name="role" class="w-full bg-[#070d19] border border-slate-800 focus:border-[#10b981] rounded-xl px-4 py-3 text-sm text-white outline-none transition-all cursor-pointer">
+          <option value="patient">Pacijent (AI analiza rizika)</option>
+          <option value="doctor">Lekar (Dashboard i ordinacija)</option>
+        </select>
+      </div>
+
+      <div *ngIf="errorMessage" class="text-xs text-red-500 font-semibold">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="w-full bg-[#02b290] hover:bg-[#029a7c] text-white font-bold text-sm rounded-xl py-3.5 transition-all shadow-lg active:scale-[0.99] mt-2">
+        Registruj se
+      </button>
+    </form>
+  </div>
+</div>

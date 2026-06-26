@@ -14,7 +14,7 @@ export class DiabetesCheckService {
   constructor(private http : HttpClient){}
 
   sendDiabatesData(data: any): Observable<any>{
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
 
     const headers = new HttpHeaders({
       'Content-Type' : 'application/json',

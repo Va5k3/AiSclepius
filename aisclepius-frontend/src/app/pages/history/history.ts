@@ -23,7 +23,7 @@ export class History implements OnInit {
   }
 
   loadHistory(): void {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('auth_token');
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${token}`
     });
