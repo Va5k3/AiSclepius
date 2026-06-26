@@ -22,6 +22,7 @@ Route::post('/login', function (Request $request) {
             'success' => true,
             'token' => $token,
             'role'=> $user->role,
+            'name'=>$user->name,
             'user' => $user
         ]);
     }

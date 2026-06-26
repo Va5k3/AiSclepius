@@ -11,8 +11,16 @@ import { AuthService } from '../../services/auth';
   styleUrl: './main-layout.css'
 })
 export class MainLayout {
+
+  userRole: 'patient' | 'doctor' | string |null = null;
   
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService : AuthService) {
+    this.userRole = this.authService.getRole();
+  }
+
+  getDashboardRoute(): string{
+    return this.userRole  === 'doctor' ? '/doctor-dashboard' : '/dashboard';
+  }
 
   logout() {
     console.log('Korisnik se odjavljuje iz layout-a...');
