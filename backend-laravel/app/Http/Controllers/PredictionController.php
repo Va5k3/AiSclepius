@@ -9,7 +9,7 @@ use App\Models\Prediction;
 
 class PredictionController extends Controller
 {
-    private string $urlAPI = "http://localhost:8000";
+    private string $urlAPI = "http://ml-service:8000";
 
     // FORMS - GET REQUESTS
    /* public function heartForm(){

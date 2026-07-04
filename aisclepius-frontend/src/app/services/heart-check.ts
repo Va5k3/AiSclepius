@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaderResponse, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs'; 
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -8,8 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class HeartCheckService {
 
-  // Laravel API URL (lokalni port 8001)
-  private apiUrl = 'http://localhost:8001/api/predict-heart';
+  private apiUrl = `${environment.apiBaseUrl}/predict-heart`;
 
   constructor(private http: HttpClient){}
 

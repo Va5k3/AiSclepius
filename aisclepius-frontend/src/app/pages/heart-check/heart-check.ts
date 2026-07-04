@@ -1,16 +1,17 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { HeartCheckService } from '../../services/heart-check';
 
 @Component({
   selector: 'app-heart-check',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   standalone: true,
   templateUrl: './heart-check.html',
   styleUrl: './heart-check.css',
 })
-export class HeartCheck {
+export class HeartCheck implements OnInit{
 
   heartData = {
     age: null,
@@ -22,7 +23,7 @@ export class HeartCheck {
     smoking: false,
     family_history: false
   };
-
+  isLoggedIn : boolean = false;
   isLoading = false; // animacija ucitavanja
   apiResult: any = null; 
   errorMessage = '';
@@ -33,6 +34,11 @@ export class HeartCheck {
     private heartCheckService: HeartCheckService,
     private cdr: ChangeDetectorRef
   ) {}
+
+
+  ngOnInit(){
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+  }
   
   onSubmit(event: Event) {
     console.log('Dugme je uspešno kliknuto!');

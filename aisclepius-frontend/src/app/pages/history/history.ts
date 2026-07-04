@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-history',
@@ -14,7 +15,7 @@ export class History implements OnInit {
   isLoading = true;
   errorMessage = '';
   
-  private apiUrl = 'http://localhost:8001/api/history'; // Prilagodi port ako je drugačiji
+  private apiUrl = `${environment.apiBaseUrl}/history`;
 
   constructor(private http: HttpClient, private cdr: ChangeDetectorRef) {}
 

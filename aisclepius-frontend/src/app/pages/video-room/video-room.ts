@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 declare var JitsiMeetExternalAPI: any;
 
@@ -33,7 +34,7 @@ export class VideoRoom implements OnInit, OnDestroy {
     });
 
     // Pozivamo Laravel i prosleđujemo taj ID
-    this.http.get(`http://localhost:8001/api/appointment/${this.appointmentId}/room`, {headers}).subscribe({
+    this.http.get(`${environment.apiBaseUrl}/appointment/${this.appointmentId}/room`, {headers}).subscribe({
       next: (res: any) => {
         this.roomData = res;
         
@@ -75,7 +76,7 @@ export class VideoRoom implements OnInit, OnDestroy {
       'Authorization' : `Bearer ${token}`
     })
 
-    this.http.post(`http://localhost:8001/api/appointment/${this.appointmentId}/finish`, {headers})
+    this.http.post(`${environment.apiBaseUrl}/appointment/${this.appointmentId}/finish`, {}, {headers})
       .subscribe({
         next: () => {
           this.cleanUpJitsi();

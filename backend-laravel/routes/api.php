@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\PredictionController; 
 use App\Http\Controllers\AppointmentController; 
+use App\Http\Controllers\MedicalRecordController;
 use Illuminate\Support\Facades\Hash; 
 use App\Models\User;                  
 
@@ -74,6 +75,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/appointments', [AppointmentController::class, 'index']); 
     Route::get('/appointment/{id}/room', [AppointmentController::class, 'joinRoom']);
     Route::post('/appointment/{id}/finish', [AppointmentController::class, 'finishRoom']);
+
+    Route::get('/medical-record/{patientId}', [MedicalRecordController::class, 'show']);
+    Route::post('/medical-record/{patientId}', [MedicalRecordController::class, 'storeOrUpdate']);
     
     Route::get('/patients', function () {
         return response()->json([

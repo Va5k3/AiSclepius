@@ -9,8 +9,27 @@ app = FastAPI(title="HealthAI Service", version="1.0")
 heart_model = joblib.load("heart_model.pkl")
 diabetes_model = joblib.load("diabetes_model.pkl")
 
-heart_explainer = shap.TreeExplainer(heart_model)
-diabetes_explainer = shap.TreeExplainer(diabetes_model)
+def build_explainer(model):
+    try:
+        return shap.TreeExplainer(model)
+    except Exception:
+        return None
+
+
+heart_explainer = build_explainer(heart_model)
+diabetes_explainer = build_explainer(diabetes_model)
+
+
+def extract_shap_values(explainer, input_data):
+    if explainer is None:
+        return []
+
+    shap_values = explainer.shap_values(input_data)
+
+    if isinstance(shap_values, list):
+        return shap_values[1][0].tolist()
+
+    return shap_values[0][:, 1].tolist() if len(shap_values.shape) > 2 else shap_values[0].tolist()
 
 
 
@@ -28,12 +47,7 @@ def predict_heart(data: list = Body(...)):
     input_data = np.array(data).reshape(1,-1)
     prediction = heart_model.predict(input_data)
 
-    shap_values = heart_explainer.shap_values(input_data)
-
-    if isinstance(shap_values, list): 
-        current_shape = shap_values[1][0].tolist()
-    else:
-        current_shape = shap_values[0][:, 1].tolist() if len(shap_values.shape) > 2 else shap_values[0].tolist()
+    current_shape = extract_shap_values(heart_explainer, input_data)
 
 
     return {"risk": int(prediction[0]),
@@ -44,12 +58,7 @@ def predict_diabetes(data: list = Body(...)):
     input_data = np.array(data).reshape(1,-1)
     prediction = diabetes_model.predict(input_data)
 
-    shap_values = diabetes_explainer.shap_values(input_data);
-
-    if isinstance(shap_values, list):
-        current_shape = shap_values[1][0].tolist()
-    else:
-        current_shape = shap_values[0][:, 1].tolist() if len(shap_values.shape) > 2 else shap_values[0].tolist()
+    current_shape = extract_shap_values(diabetes_explainer, input_data)
 
 
     return{"risk": int(prediction[0]),

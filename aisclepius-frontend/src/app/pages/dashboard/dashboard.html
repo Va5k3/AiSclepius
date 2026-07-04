@@ -69,9 +69,13 @@
             <h3 class="text-xl font-bold text-slate-800 mb-2 tracking-tight group-hover:text-red-500 transition-colors duration-300">Kardiološka AI</h3>
             <p class="text-slate-500 text-xs font-medium leading-relaxed mb-8">Predikcija kardiovaskularnog rizika sa visokom preciznošću. Procena stanja miokarda kroz analizu unetih biomarkera i pritiska.</p>
           </div>
+          @if (isLoggedIn) {
           <a routerLink="/heart-check" class="w-full bg-slate-50 group-hover:bg-red-500 text-slate-700 group-hover:text-white py-3 rounded-2xl text-center text-xs font-bold tracking-wide transition-all duration-300 block border border-slate-100 group-hover:border-red-500 group-hover:shadow-lg group-hover:shadow-red-500/20">
             Pokreni Skrining
           </a>
+          } @else {
+         <a routerLink="/login" class="w-full bg-slate-50 group-hover:bg-red-500 text-slate-700 group-hover:text-white py-3 rounded-2xl text-center text-xs font-bold tracking-wide transition-all duration-300 block border border-slate-100 group-hover:border-red-500 group-hover:shadow-lg group-hover:shadow-red-500/20">Prijavite se za skrining</a>
+          }
         </div>
 
         <div class="group bg-white rounded-3xl p-7 border border-slate-200/60 shadow-sm hover:shadow-2xl hover:shadow-slate-300/60 hover:border-blue-200 hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col justify-between animate-fade-in-up">
@@ -82,9 +86,13 @@
             <h3 class="text-xl font-bold text-slate-800 mb-2 tracking-tight group-hover:text-blue-500 transition-colors duration-300">Endokrina AI (Diabetes)</h3>
             <p class="text-slate-500 text-xs font-medium leading-relaxed mb-8">Procena metaboličkih parametara i insulinske rezistencije. AI model računa procente rizika na osnovu glukoze i BMI indeksa.</p>
           </div>
+          @if (isLoggedIn) {
           <a routerLink="/diabetes-check" class="w-full bg-slate-50 group-hover:bg-blue-500 text-slate-700 group-hover:text-white py-3 rounded-2xl text-center text-xs font-bold tracking-wide transition-all duration-300 block border border-slate-100 group-hover:border-blue-500 group-hover:shadow-lg group-hover:shadow-blue-500/20">
             Izračunaj Indeks
           </a>
+        }@else{
+          <a routerLink="/login" class="w-full bg-slate-50 group-hover:bg-red-500 text-slate-700 group-hover:text-white py-3 rounded-2xl text-center text-xs font-bold tracking-wide transition-all duration-300 block border border-slate-100 group-hover:border-red-500 group-hover:shadow-lg group-hover:shadow-red-500/20">Prijavite se za skrining</a>
+        }
         </div>
 
         <div class="group bg-white rounded-3xl p-7 border border-slate-200/60 shadow-sm hover:shadow-2xl hover:shadow-slate-300/60 hover:border-purple-200 hover:-translate-y-2 transition-all duration-500 ease-out flex flex-col justify-between animate-fade-in-up">

@@ -24,7 +24,7 @@ export class MainLayout {
 
   logout() {
     console.log('Korisnik se odjavljuje iz layout-a...');
-    localStorage.removeItem('token');
+    localStorage.removeItem('auth_token');
     this.router.navigate(['/login']);
   }
 }

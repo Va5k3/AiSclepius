@@ -63,23 +63,32 @@
         </div>
 
         <div class="pt-4">
-          <button type="submit" [disabled]="isLoading" 
-            [className]="isLoading 
-              ? 'w-full bg-slate-400 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 cursor-not-allowed shadow-md' 
-              : 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20 active:scale-[0.99]'">
-            
-            <span *ngIf="isLoading" class="flex items-center gap-2">
-              <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
-              Neuralna mreža računa...
-            </span>
-            
-            <span *ngIf="!isLoading">
-              Pokreni Neuralnu Analizu
-            </span>
-          </button>
+          @if (isLoggedIn) {
+            <!-- KORISNIK JE ULOGOVAN: Pravo dugme koje šalje podatke modelu na backendu -->
+            <button type="submit" [disabled]="isLoading" 
+              [className]="isLoading 
+                ? 'w-full bg-slate-400 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 cursor-not-allowed shadow-md' 
+                : 'w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20 active:scale-[0.99]'">
+              
+              <!-- Prikaz kada model računa -->
+              <span *ngIf="isLoading" class="flex items-center gap-2">
+                <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <span>Neuralna mreža računa...</span>
+              </span>
+              
+              <!-- Prikaz kada je sve spremno -->
+              <span *ngIf="!isLoading">Pokreni Neuralnu Analizu</span>
+            </button>
+          } @else {
+            <!-- KORISNIK JE GOST: Dugme koje izgleda identično crveno i premium, ali ga vodi na login -->
+            <a routerLink="/login"
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-2xl px-6 py-4 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-blue-600/20 active:scale-[0.99] text-center cursor-pointer">
+              <span>Prijavite se za analizu</span>
+            </a>
+          }
         </div>
       </form>
 

@@ -1,0 +1,9 @@
+.git
+.venv
+**/node_modules
+**/.angular
+**/dist
+**/coverage
+**/__pycache__
+**/*.pyc
+backend-laravel/storage/logs

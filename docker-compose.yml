@@ -1,0 +1,58 @@
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: aisclepius_db
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ml-service:
+    build:
+      context: ./ml-service
+    restart: unless-stopped
+    expose:
+      - "8000"
+
+  backend:
+    build:
+      context: ./backend-laravel
+    restart: unless-stopped
+    env_file:
+      - ./backend-laravel/.env
+    environment:
+      APP_ENV: production
+      APP_DEBUG: "false"
+      ML_SERVICE_URL: http://ml-service:8000
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: aisclepius_db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    depends_on:
+      mysql:
+        condition: service_healthy
+      ml-service:
+        condition: service_started
+    expose:
+      - "80"
+
+  frontend:
+    build:
+      context: ./aisclepius-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_started
+    ports:
+      - "80:80"
+
+volumes:
+  mysql_data:

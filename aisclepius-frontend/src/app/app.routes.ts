@@ -8,33 +8,62 @@ import { DiabetesCheck } from './pages/diabetes-check/diabetes-check';
 import { History } from './pages/history/history';
 import { VideoRoom } from './pages/video-room/video-room';
 
+import { authGuard, roleGuard } from './gurads/auth-guard';
+
 // Uvozimo našu novu layout komponentu
 import { MainLayout } from './layouts/main-layout/main-layout';
 
 export const routes: Routes = [
 
-    // Rute koje su van glavnog layout-a (nemaju navigaciju)
+    // Rute za goste
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
 
-    // Glavni layout koji sadrži sve ostale stranice
+    // zasticene rute (zahtevaju login)
     {
-        path: '', // Prazna putanja, odnosi se na root
+        path: '', 
         component: MainLayout,
         children: [
-            // Sve stranice unutar 'children' će se prikazati unutar MainLayoutComponent
-            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, // Ako je putanja prazna, preusmeri na dashboard
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
+            
             { path: 'dashboard', component: Dashboard },
-            { path: 'doctor-dashboard', component: DoctorDashboardComponent }, 
-            { path: 'heart-check', component: HeartCheck },
-            { path: 'diabetes-check', component: DiabetesCheck },
-            { path: 'history', component: History },
-            { path: 'appointment/1/room', component: VideoRoom },
-           // {path : 'login', component: LoginComponent},
-           // {path : 'register', component: RegisterComponent}
+            
+
+            // Lekarske rute (Pacijent ovde nema pristup)
+            { 
+              path: 'doctor-dashboard', 
+              component: DoctorDashboardComponent, 
+              canActivate: [roleGuard], 
+              data: { roles: ['doctor'] } 
+            },
+
+            // Zajedničke rute (I pacijent i lekar moraju da vide istoriju i uđu u video sobu)
+            { 
+              path: 'history', 
+              component: History, 
+              canActivate: [roleGuard], 
+              data: { roles: ['patient', 'doctor'] } 
+            },
+            { 
+              path: 'appointment/1/room', 
+              component: VideoRoom, 
+              canActivate: [roleGuard], 
+              data: { roles: ['patient', 'doctor'] } 
+            },
+            { 
+              path: 'heart-check', 
+              component: HeartCheck, 
+              canActivate: [roleGuard], 
+              data: { roles: ['patient', 'doctor'] } 
+            },
+            { 
+              path: 'diabetes-check', 
+              component: DiabetesCheck, 
+              canActivate: [roleGuard], 
+              data: { roles: ['patient', 'doctor'] } 
+            },
         ]
     },
 
-    // Ako nijedna ruta ne odgovara, preusmeri na login
     { path: '**', redirectTo: 'login' }
 ];

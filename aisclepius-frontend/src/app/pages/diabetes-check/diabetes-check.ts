@@ -1,16 +1,16 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DiabetesCheckService } from '../../services/diabetes-check';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-diabetes-check',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, RouterLink],
   standalone: true,
   templateUrl: './diabetes-check.html',
   styleUrl: './diabetes-check.css',
 })
-export class DiabetesCheck {
+export class DiabetesCheck implements OnInit {
 
   diabetesData = {
     pregnacies: null,
@@ -23,7 +23,7 @@ export class DiabetesCheck {
     age : null
   };
 
-
+  isLoggedIn:boolean = false;
   isLoading = false;
   apiResult: any = null;
   errorMessage = '';
@@ -34,6 +34,9 @@ export class DiabetesCheck {
     private cdr: ChangeDetectorRef
   ){}
 
+  ngOnInit(): void {
+    this.isLoggedIn = !!localStorage.getItem('auth_token');
+  }
   onSubmti(event: Event){
     console.log('Dugme je uspesno kliknuto!');
     event.preventDefault();
