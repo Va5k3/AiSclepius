@@ -1,18 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';     
+import { RouterLink } from '@angular/router';
+
 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.html',
   styleUrls: ['./login.css'] 
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   // Model koji se vezuje za HTML input polja
   credentials = {
     email: '',
@@ -20,9 +22,17 @@ export class LoginComponent {
   };
   errorMessage = '';
 
-  constructor(private authService: AuthService, private router: Router) {}
-
+  constructor(private authService: AuthService,
+              private router: Router,
+              private cdr: ChangeDetectorRef) {}
+  
+  ngOnInit(): void {
+    console.log("Brisanje tokone...");
+    localStorage.removeItem('auth_token');
+    
+  }
   onLogin() {
+
     this.errorMessage = '';
     
     this.authService.login(this.credentials).subscribe({
@@ -38,6 +48,7 @@ export class LoginComponent {
       },
       error: (err) => {
         this.errorMessage = err.error?.message || 'Pogrešan email ili lozinka.';
+        this.cdr.detectChanges();
       }
     });
   }

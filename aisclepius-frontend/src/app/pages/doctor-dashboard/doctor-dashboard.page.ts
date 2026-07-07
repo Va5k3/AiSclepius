@@ -20,6 +20,8 @@ export class DoctorDashboardComponent implements OnInit {
   notes: string = '';
   medications: string[] = [];
   newMedication: string = ''; // Pomoćna promenljiva za input polje
+  historyList: any[] = [];
+  userName:string | null = null;
 
   private baseUrl = environment.apiBaseUrl;
 
@@ -40,9 +42,10 @@ export class DoctorDashboardComponent implements OnInit {
       next: (res) => {
         if (res.success && res.data){ 
           this.patients = res.data;
-          this.cdr.detectChanges();
         }
         this.isLoading = false;
+        this.cdr.detectChanges();
+
       }
     });
   }
@@ -55,7 +58,7 @@ export class DoctorDashboardComponent implements OnInit {
     
     this.http.get<any>(`${this.baseUrl}/medical-record/${patient.id}`, { headers: this.getHeaders() }).subscribe({
       next: (res) => {
-        console.log('Podaci sa servera:', res); // Ovo će nam ispisati u konzoli šta je tačno stiglo
+        console.log('Kartoni sa servera:', res); // Ovo će nam ispisati u konzoli šta je tačno stiglo
         if (res.success && res.data) {
           this.notes = res.data.notes || '';
           this.medications = res.data.medications || [];
@@ -67,6 +70,25 @@ export class DoctorDashboardComponent implements OnInit {
         console.error('Greška pri preuzimanju kartona:', err);
       }
     });
+
+    
+    this.http.get<any>(`${this.baseUrl}/historyId/${patient.id}`, { headers: this.getHeaders() }).subscribe({
+      next: (res) => {
+        console.log('Istorija sa servera:', res); // Ovo će nam ispisati u konzoli šta je tačno stiglo
+        if (res.success && res.history) {
+          this.historyList = res.history;
+          this.cdr.detectChanges();
+        }else{
+          console.error('Greska pri dodavanju istorije pacijenta');
+         
+        }
+      },
+      error: (err) => {
+        console.error('Greška pri preuzimanju istorije pacijenta:', err);
+      }
+    });
+
+
   }
 
   // Dodavanje leka u lokalni niz

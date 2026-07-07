@@ -15,13 +15,18 @@ export class HeartCheck implements OnInit{
 
   heartData = {
     age: null,
-    gender: '',
-    systolic_bp: null,
-    diastolic_bp: null,
-    cholesterol: null,
-    bmi: null,
-    smoking: false,
-    family_history: false
+    sex: '',       
+    cp: null,       // Tip bola u grudima 
+    trestbps: null, // Krvni pritisak u mirovanju 
+    chol: null,     // holesterol
+    fbs: false,     // secer u krvi <120
+    restecg: null,  // EKG u mirovanju (0-2)
+    thalach: null,  // Maksimalan puls
+    exang: false,   // Checkbox: Angina izazvana vezbanjem
+    oldpeak: null,  // ST depresija (decimalni broj)
+    slope: null,    // Nagib ST segmenta (1-3)
+    ca: null,       // Broj obojenih krvnih sudova (0-3)
+    thal: null      // Defekt (3, 6, 7)
   };
   isLoggedIn : boolean = false;
   isLoading = false; // animacija ucitavanja
@@ -61,7 +66,7 @@ export class HeartCheck implements OnInit{
         this.showGif = true;
         // Ako je rizik 1 
         if (response.risk === 1) {
-          const sadAudio = new Audio('sounds/sadShort.mp3');
+          const sadAudio = new Audio('sounds/sadShort2.mp3');
           sadAudio.play().catch(err => console.log("Audio bloker u brauzeru:", err));
         } 
         // Ako je rizik 0 

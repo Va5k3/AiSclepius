@@ -60,6 +60,7 @@
                 </button>
               </div>
 
+
               <!-- Prikaz dodatih lekova -->
               <div class="flex flex-wrap gap-2 pt-2">
                 @for (med of medications; track $index) {
@@ -73,6 +74,7 @@
               </div>
             </div>
 
+   
             <!-- AKCIJA: SAČUVAJ -->
             <div class="pt-4 border-t flex justify-end">
               <button (click)="saveMedicalRecord()" 
@@ -88,9 +90,77 @@
             <p class="text-slate-400 text-sm">Izaberite pacijenta sa leve strane da biste videli i uredili njegove podatke.</p>
           </div>
         }
+        
       </div>
 
     </div>
-  }
+    
+  } 
+  <div class="mt-6 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+
+  <!-- Zaglavlje istorije -->
+  <div class="border-b pb-4 mb-4">
+    <h3 class="text-xl font-bold text-slate-900">Istorija pacijenta</h3>
+    <p class="text-sm text-slate-500">
+      Pacijent:
+      <span class="font-semibold text-slate-800">
+        {{ selectedPatient?.name }}
+      </span>
+    </p>
+  </div>
+  <div *ngIf="historyList.length === 0" class="p-12 text-center">
+      <p class="text-sm text-slate-400 font-medium">Nema pronađenih analiza u istoriji.</p>
+    </div>
+
+    <div *ngIf="historyList.length > 0" class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="bg-slate-50/75 border-b border-slate-100 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <th class="px-6 py-4">Tip Analize</th>
+            <th class="px-6 py-4">Datum i Vreme</th>
+            <th class="px-6 py-4">Klinički Inputi (Prva 3)</th>
+            <th class="px-6 py-4 text-center">AI Rezultat</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100 text-sm font-medium text-slate-700">
+          <tr *ngFor="let item of historyList" class="hover:bg-slate-50/50 transition-colors">
+            
+            
+            <td class="px-6 py-4">
+              <span *ngIf="item.type === 'heart'" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-50 text-red-700 border border-red-100">
+                <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                Kardiologija
+              </span>
+              <span *ngIf="item.type === 'diabetes'" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-100">
+                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                Dijabetes
+              </span>
+            </td>
+            
+            <td class="px-6 py-4 text-xs text-slate-500">
+              {{ item.created_at | date:'dd.MM.yyyy - HH:mm' }}
+            </td>
+            
+            <td class="px-6 py-4 text-xs font-mono text-slate-400">
+              <span *ngIf="item.input_data">
+                [{{ item.input_data[0] }}, {{ item.input_data[1] }}, {{ item.input_data[2] }}, {{ item.input_data[3] }}, {{ item.input_data[4] }}, {{ item.input_data[5] }}, {{ item.input_data[6] }}, {{ item.input_data[7] }}, {{ item.input_data[8] }}]
+              </span>
+            </td>
+            
+            <td class="px-6 py-4 text-center">
+              <span *ngIf="item.result === 1" class="inline-block px-3 py-1 rounded-xl text-xs font-black bg-red-500 text-white shadow-sm shadow-red-500/20">
+                POVIŠEN RIZIK
+              </span>
+              <span *ngIf="item.result !== 1" class="inline-block px-3 py-1 rounded-xl text-xs font-black bg-emerald-500 text-white shadow-sm shadow-emerald-500/20">
+                NIZAK RIZIK
+              </span>
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+
 
 </div>

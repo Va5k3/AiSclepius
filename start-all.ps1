@@ -14,9 +14,7 @@ Start-Process powershell -ArgumentList "cd aisclepius-frontend; ng serve"
 Write-Host "Starting ML Service (FastAPI)..." -ForegroundColor Yellow
 Start-Process powershell -ArgumentList "cd ml-service; uvicorn main:app --reload"
 
-# XAMPP (MySQL)
-Write-Host "Starting XAMPP (MySQL)..." -ForegroundColor Yellow
-Start-Process "C:\xampp\xampp-control.exe"
+
 
 Write-Host "===================================" -ForegroundColor Green
 Write-Host "   ALL SERVICES STARTED" -ForegroundColor Green

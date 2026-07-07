@@ -11,48 +11,50 @@ class PredictionController extends Controller
 {
     private string $urlAPI = "http://ml-service:8000";
 
-    // FORMS - GET REQUESTS
-   /* public function heartForm(){
-        return view('heart-check'); // sta je view? to je fajl koji se nalazi u resources/views i on se koristi za prikazivanje stranice korisniku. U ovom slucaju, to je fajl heart-check.blade.php
-    } OBRISATI
-*/         
-  /*  public function diabetesForm(){
-        return view('diabetes-check');
-    } OBRISATI
-    */
-    // PREDICTIONS - POST REQUESTS
+ 
 
 
 public function predictHeart(Request $request)
 {
     
-        $age          = (float) $request->input('age', 0);
-        $genderText   = $request->input('gender', 'muški');
-        $genderValue  = ($genderText === 'muški' || $genderText == '1') ? 1.0 : 0.0;
-        $systolic_bp  = (float) $request->input('systolic_bp', 0);
-        $diastolic_bp = (float) $request->input('diastolic_bp', 0);
-        $cholesterol  = (float) $request->input('cholesterol', 0);
-        $bmi          = (float) $request->input('bmi', 0);
-        
-        // Angular salje true/false ili 1/0 za checkbox-ove
-        $smoking      = $request->input('smoking') ? 1.0 : 0.0;
-        $family_hist  = $request->input('family_history') ? 1.0 : 0.0;
+    $age      = (float) $request->input('age', 0);
+    
+    $sexText  = $request->input('sex', 'muški'); 
+    $sex      = ($sexText === 'muški' || $sexText == '1') ? 1.0 : 0.0;
+    
+    $cp       = (float) $request->input('cp', 0);        // Tip bola u grudima (0-3 ili 1-4 zavisno od pripreme)
+    $trestbps = (float) $request->input('trestbps', 0);  // Sistolni pritisak u mirovanju
+    $chol     = (float) $request->input('chol', 0);      // Holesterol
+    
+    // Fasting blood sugar (fbs) > 120 mg/dl (1 = true; 0 = false)
+    $fbs      = $request->input('fbs') ? 1.0 : 0.0;
+    
+    $restecg  = (float) $request->input('restecg', 0);   // EKG u mirovanju (0, 1 ili 2)
+    $thalach  = (float) $request->input('thalach', 0);   // Maksimalan puls (Max heart rate achieved)
+    
+    // Angina izazvana vežbanjem (exang: 1 = da; 0 = ne)
+    $exang    = $request->input('exang') ? 1.0 : 0.0;
+    
+    $oldpeak  = (float) $request->input('oldpeak', 0.0); // ST depresija
+    $slope    = (float) $request->input('slope', 0);     // Nagib ST segmenta
+    $ca       = (float) $request->input('ca', 0);        // Broj obojenih glavnih krvnih sudova (0-3)
+    $thal     = (float) $request->input('thal', 0);      // Defekt (3 = normalno; 6 = fiksiran; 7 = reverzibilan)
 
-        $numericData = [
-            $age,
-            $genderValue,
-            1, // Privremena vrednost za indeks koji nedostaje u Angularu
-            $systolic_bp,
-            $diastolic_bp,
-            $cholesterol,
-            1,
-            $bmi,
-            $smoking,
-            1,
-            $family_hist,
-            1,
-            1
-        ];
+    $numericData = [
+        $age,       
+        $sex,       
+        $cp,        
+        $trestbps, 
+        $chol,      
+        $fbs,       
+        $restecg,   
+        $thalach,   
+        $exang,     
+        $oldpeak,   
+        $slope,     
+        $ca,        
+        $thal       
+    ];
     try {
         // Saljemo niz brojeva Python serveru na port 8000
         $mlService = env('ML_SERVICE_URL',$this->urlAPI);
