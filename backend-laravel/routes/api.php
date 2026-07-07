@@ -70,7 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //diabetes-check
     Route::post('/predict-diabetes',[PredictionController::class,'predictDiabetes'])->name('predict.diabetes');
 
-    Route::get('/history',[PredictionController::class, 'history'])->name('predict.history');
+    Route::get('/history',[PredictionController::class, 'history']);
+    Route::get('/historyId/{patientId}',[PredictionController::class, 'historyId']);
+    
+
        
     Route::get('/appointments', [AppointmentController::class, 'index']); 
     Route::get('/appointment/{id}/room', [AppointmentController::class, 'joinRoom']);

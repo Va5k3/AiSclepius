@@ -176,6 +176,34 @@ public function predictHeart(Request $request)
                 'history' => $predictions],200);
     }
 
+      public function historyId($patientId)
+    {
+
+
+       
+        if(!$patientId){
+              return response()->json([
+                'success'=>false,
+                'message'=>'Korisnik nije pronadjen'
+            ],401);
+        }
+
+        $predictions = Prediction::where('user_id',$patientId)->get();
+       
+        
+
+
+        $predictions->transform(function ($item) {
+            $item->input_data = is_string($item->input_data) ? json_decode($item->input_data) : $item->input_data;
+            $item->shap_values = is_string($item->shap_values) ? json_decode($item->shap_values) : $item->shap_values;
+            return $item;
+        });
+
+        return response()->json([
+                'success' => true,
+                'history' => $predictions],200);
+    }
+
    public function show($id){
         $userId = auth('sanctum')->id() ?: (auth()->id() ?: 1);
 
