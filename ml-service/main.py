@@ -11,10 +11,12 @@ diabetes_model = joblib.load("diabetes_model.pkl")
 
 def build_explainer(model):
     try:
-        return shap.TreeExplainer(model)
-    except Exception:
+        explainer = shap.TreeExplainer(model)
+        print("SHAP explainer created:", type(model))
+        return explainer
+    except Exception as e:
+        print("SHAP ERROR:", repr(e))
         return None
-
 
 heart_explainer = build_explainer(heart_model)
 diabetes_explainer = build_explainer(diabetes_model)
