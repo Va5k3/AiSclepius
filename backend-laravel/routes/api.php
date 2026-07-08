@@ -55,6 +55,7 @@ Route::post('/register', function (Request $request) {
         'success' => true,
         'token' => $token,
         'role' => $user->role,
+        'name' => $user->name,
         'user' => $user
     ], 211);
 });
