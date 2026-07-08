@@ -10,7 +10,7 @@ import { VideoRoom } from './pages/video-room/video-room';
 
 import { authGuard, roleGuard } from './gurads/auth-guard';
 
-// Uvozimo našu novu layout komponentu
+
 import { MainLayout } from './layouts/main-layout/main-layout';
 
 export const routes: Routes = [
@@ -37,7 +37,7 @@ export const routes: Routes = [
               data: { roles: ['doctor'] } 
             },
 
-            // Zajedničke rute (I pacijent i lekar moraju da vide istoriju i uđu u video sobu)
+            // zajednicke rute
             { 
               path: 'history', 
               component: History, 

@@ -66,7 +66,7 @@ public function predictHeart(Request $request)
             
             $userID = auth('sanctum')->id() ?:1;
           
-            // Čuvanje u bazu podataka
+            // Cuvanje u bazu podataka
             Prediction::create([
 
                 'user_id' => $userID ,
