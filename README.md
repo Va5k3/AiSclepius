@@ -83,8 +83,8 @@ Client → Nginx (Angular) → Laravel API → FastAPI (ML) → Laravel API → 
 ```
 aisclepius/
 ├── docker-compose.yml
-├── frontend/              # Angular app + Nginx configuration
-├── backend/                # Laravel API
+├── aisclepius-frontend/              # Angular app + Nginx configuration
+├── backend-laravel/                # Laravel API
 │   ├── app/Http/Controllers/
 │   ├── app/Models/
 │   └── ...
@@ -109,7 +109,7 @@ aisclepius/
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/aisclepius.git
+git clone https://github.com/Va5k3/aisclepius.git
 cd aisclepius
 
 # Start all services
@@ -138,13 +138,11 @@ The system is designed to run within an AWS environment with the following setup
 4. **Amazon CloudWatch** tracks CPU metrics and triggers scaling actions.
 5. **Amazon RDS (MySQL)** stores all data independently of the EC2 instances' lifecycle.
 
-> A detailed description of the AWS architecture and request flow is available in the accompanying paper: [`AiSclepius_seminarski_rad.docx`](./docs/AiSclepius_seminarski_rad.docx).
-
 ### Basic Deployment Steps
 
 ```bash
 # On each EC2 instance (part of the AMI or user-data script)
-git clone https://github.com/<your-username>/aisclepius.git
+git clone https://github.com/Va5k3/aisclepius.git
 cd aisclepius
 docker compose up -d --build
 ```
@@ -162,10 +160,6 @@ Example flow for a single AI risk assessment:
 5. The result is returned to Laravel, which persists it in the RDS database.
 6. The response is displayed to the user, along with a visual breakdown of the SHAP explanation.
 
-## License
 
-_Add an appropriate license (e.g. MIT) or a note that the project is intended for academic/portfolio purposes._
-
----
 
 **Author:** Va5k3 — IT student
