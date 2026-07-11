@@ -78,6 +78,40 @@ Client → Nginx (Angular) → Laravel API → FastAPI (ML) → Laravel API → 
 - **Machine Learning:** Python, FastAPI, XGBoost, SHAP, scikit-learn
 - **Infrastructure:** Docker, Docker Compose, AWS (EC2, ALB, ASG, CloudWatch, RDS)
 
+## Screenshots
+
+### Home Page
+
+<img width="601" height="294" alt="image" src="https://github.com/user-attachments/assets/46147fb5-e306-46d7-970d-ef28635b93c5" />
+
+### Risk Assessment / AI Prediction
+
+<img width="602" height="293" alt="image" src="https://github.com/user-attachments/assets/2dc826ea-e94e-4caa-acff-b404682b4c73" />
+
+
+### SHAP Explanation
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ed169729-5d7b-4ee6-8d22-16062f08a7b9" />
+
+
+### Assessment History
+
+<img width="602" height="279" alt="image" src="https://github.com/user-attachments/assets/fd9253b1-7c33-479a-a3c9-97555e3773cb" />
+
+
+### Video Consultation
+
+<img width="602" height="289" alt="image" src="https://github.com/user-attachments/assets/25bed7b4-bcb2-4018-9bdd-927f0a584c9e" />
+
+
+### Doctor Dashboard (Patient Notes & Therapy)
+
+<img width="603" height="288" alt="image" src="https://github.com/user-attachments/assets/641a4c02-7f5f-4f49-81c4-5d9063cc3567" />
+
+
+> Place your screenshots in `docs/screenshots/` using the filenames above, or update the paths to match your own naming.
+
+
 ## Project Structure
 
 ```
