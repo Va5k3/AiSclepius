@@ -195,4 +195,4 @@ Example flow for a single AI risk assessment:
 
 
 
-**Author:** Va5k3 — IT student
+
