@@ -109,7 +109,6 @@ Client → Nginx (Angular) → Laravel API → FastAPI (ML) → Laravel API → 
 <img width="603" height="288" alt="image" src="https://github.com/user-attachments/assets/641a4c02-7f5f-4f49-81c4-5d9063cc3567" />
 
 
-> Place your screenshots in `docs/screenshots/` using the filenames above, or update the paths to match your own naming.
 
 
 ## Project Structure
@@ -181,7 +180,7 @@ cd aisclepius
 docker compose up -d --build
 ```
 
-ALB, ASG, and RDS configuration is done through the AWS Console or an IaC tool (e.g. CloudFormation/Terraform — add to `infra/` if applicable).
+ALB, ASG, and RDS configuration is done through the AWS Console.
 
 ## Request Flow
 
